@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useExpo } from '../context/ExpoContext';
-import { encodeExpo, artistName, iiifUrl } from '../lib/art';
+import { encodeExpo, artistName } from '../lib/art';
+import ArtworkImage from '../components/ArtworkImage';
 
 export default function ExpoPage() {
   const {
@@ -110,9 +111,6 @@ export default function ExpoPage() {
         <div className="expo-list">
           {state.items.map((item, index) => {
             const author = artistName(item.artist_display) || 'Неизвестный автор';
-            const thumbUrl = item.image_id
-              ? iiifUrl(item.image_id, 'https://www.artic.edu/iiif/2', 200)
-              : null;
 
             return (
               <div key={item.id} className="expo-item-card">
@@ -120,15 +118,16 @@ export default function ExpoPage() {
                   #{index + 1}
                 </span>
 
-                {thumbUrl ? (
-                  <img
-                    src={thumbUrl}
+                <div className="expo-item-thumb">
+                  <ArtworkImage
+                    imageId={item.image_id}
+                    iiifBaseUrl="https://www.artic.edu/iiif/2"
+                    width={200}
+                    lqip={item.thumbnail?.lqip}
                     alt={item.title}
-                    className="expo-item-thumb"
+                    placeholderText=""
                   />
-                ) : (
-                  <div className="expo-item-thumb-placeholder">🎨</div>
-                )}
+                </div>
 
                 <div className="expo-item-info">
                   <h3 className="expo-item-title">

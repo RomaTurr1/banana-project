@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { artistName, hueBucket, iiifUrl } from '../lib/art';
+import { artistName, hueBucket } from '../lib/art';
 import { useExpo } from '../context/ExpoContext';
+import ArtworkImage from './ArtworkImage';
 
 export default function ArtworkCard({ artwork, iiifBaseUrl }) {
   const { isInExpo, addToExpo, isFull } = useExpo();
@@ -16,10 +17,6 @@ export default function ArtworkCard({ artwork, iiifBaseUrl }) {
   const hasDimensions = width && height && width > 0 && height > 0;
   const aspectRatio = hasDimensions ? `${width} / ${height}` : '4 / 3';
 
-  const imageUrl = artwork.image_id
-    ? iiifUrl(artwork.image_id, iiifBaseUrl || 'https://www.artic.edu/iiif/2', 400)
-    : null;
-
   return (
     <article className="art-card">
       <Link to={`/artwork/${artwork.id}`} className="art-card-media-link" aria-label={artwork.title}>
@@ -27,19 +24,13 @@ export default function ArtworkCard({ artwork, iiifBaseUrl }) {
           className="art-card-media-wrapper"
           style={{ aspectRatio }}
         >
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt={artwork.thumbnail?.alt_text || artwork.title || 'Изображение произведения искусства'}
-              loading="lazy"
-              className="art-card-img"
-            />
-          ) : (
-            <div className="art-card-placeholder">
-              <span className="placeholder-icon">🖼️</span>
-              <span className="placeholder-text">Нет изображения</span>
-            </div>
-          )}
+          <ArtworkImage
+            imageId={artwork.image_id}
+            iiifBaseUrl={iiifBaseUrl || 'https://www.artic.edu/iiif/2'}
+            width={400}
+            lqip={artwork.thumbnail?.lqip}
+            alt={artwork.thumbnail?.alt_text || artwork.title || 'Изображение произведения искусства'}
+          />
         </div>
       </Link>
 

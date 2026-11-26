@@ -161,6 +161,21 @@ export default function SearchPage() {
         </div>
       ) : (
         <>
+          {selectedColor !== 'all' && (
+            <div className="filter-status-bar">
+              <span>
+                Показано <strong>{filteredArtworks.length}</strong> из {artworks.length} работ на странице (фильтр: <strong>{selectedColor}</strong>)
+              </span>
+              <button
+                type="button"
+                className="pill-btn"
+                onClick={() => setSelectedColor('all')}
+              >
+                Показать все {artworks.length}
+              </button>
+            </div>
+          )}
+
           <div className="art-grid">
             {filteredArtworks.map((item) => (
               <ArtworkCard

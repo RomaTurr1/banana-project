@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getArtwork } from '../api/artic';
-import { artistName, iiifUrl } from '../lib/art';
+import { artistName } from '../lib/art';
 import { useExpo } from '../context/ExpoContext';
+import ArtworkImage from '../components/ArtworkImage';
 
 export default function ArtworkDetailPage() {
   const { id } = useParams();
@@ -73,9 +74,6 @@ export default function ArtworkDetailPage() {
   }
 
   const author = artistName(artwork.artist_display) || 'Неизвестный автор';
-  const imageUrl = artwork.image_id
-    ? iiifUrl(artwork.image_id, iiifBaseUrl, 843)
-    : null;
   const inExpo = isInExpo(artwork.id);
 
   return (
@@ -88,18 +86,15 @@ export default function ArtworkDetailPage() {
 
       <article className="detail-layout">
         <div className="detail-media-wrap">
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt={artwork.thumbnail?.alt_text || artwork.title || 'Изображение'}
-              className="detail-img"
-            />
-          ) : (
-            <div className="art-card-placeholder" style={{ padding: '4rem 2rem' }}>
-              <span className="placeholder-icon">🖼️</span>
-              <span className="placeholder-text">У этого произведения нет цифрового изображения в архиве</span>
-            </div>
-          )}
+          <ArtworkImage
+            imageId={artwork.image_id}
+            iiifBaseUrl={iiifBaseUrl}
+            width={843}
+            lqip={artwork.thumbnail?.lqip}
+            alt={artwork.thumbnail?.alt_text || artwork.title || 'Изображение'}
+            className="detail-img-container"
+            placeholderText="У этого произведения нет цифрового изображения в архиве"
+          />
         </div>
 
         <div className="detail-info">

@@ -42,13 +42,7 @@ export async function fetchArtic(url, options = {}) {
         return apiCache.get(url);
       }
 
-      const res = await fetch(url, {
-        ...options,
-        headers: {
-          'AIC-User-Agent': 'MyExpoApp/1.0 (ITSTEP Lab 6)',
-          ...(options.headers || {}),
-        },
-      });
+      const res = await fetch(url, options);
 
       if (res.status === 429) {
         throw new Error('Слишком много запросов, подождите минуту');
