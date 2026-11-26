@@ -1,4 +1,5 @@
-const BASE_URL = 'https://api.artic.edu/api/v1';
+const DIRECT_BASE_URL = 'https://api.artic.edu/api/v1';
+const BASE_URL = typeof window !== 'undefined' ? '/api/v1' : DIRECT_BASE_URL;
 const FIELDS = 'id,title,artist_display,date_display,date_start,medium_display,department_title,image_id,thumbnail,color';
 
 // In-memory cache using Map
